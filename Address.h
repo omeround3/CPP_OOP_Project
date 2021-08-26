@@ -3,25 +3,37 @@
 #define ADDRESS_H
 
 #include <string>
-#include <ostream>
 
 using namespace std;
 
 class CAddress
 {
 public:
+	// Constructor
 	CAddress(int houseNumber, const char *streetName, const char* cityName = "Tel Aviv");
-	CAddress(const CAddress& other); /* Even thgouht it is not used, it is needed */
+	// Copy Constructor
+	CAddress(const CAddress& other);
+	// Desctructor
 	~CAddress();
 
+	// Getters
 	int getHouseNumber();
 	char* getCityName();
 	char* getStreetName();
 
-	void Print(ostream& os);
+	// Class functions
+	// void Print(ostream& os);
 	void UpdateAddress(const char* cityName, const char* streetName, int houseNumber);
+	CAddress * GetCurrentAddress();
 
+	// Operators Overloading
+	const CAddress& operator = (const CAddress& other);
+	bool operator == (const CAddress& other) const;
+	bool operator != (const CAddress& other) const;
+	friend ostream& operator << (ostream& os, const CAddress& other);
+	friend istream& operator >> (istream& in, CAddress& other);
 
+	
 private:
 	int houseNumber;
 	char *cityName;
