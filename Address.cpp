@@ -2,16 +2,22 @@
 #include <iostream>
 
 
+const size_t MAX_LEN = 256;
+
 // Constructor
 CAddress::CAddress(int houseNumber, const char *streetName, const char* cityName)
 {
-	this->streetName = new char[strlen(streetName) + 1];
-	strcpy(this->streetName, streetName);
-
-	this->cityName = new char[strlen(cityName) + 1];
-	strcpy(this->cityName, cityName);
-
 	this->houseNumber = houseNumber;
+	if (streetName != NULL)
+	{
+		this->streetName = new char[strlen(streetName) + 1];
+		strcpy(this->streetName, streetName);
+	}
+	if (cityName != NULL)
+	{
+		this->cityName = new char[strlen(cityName) + 1];
+		strcpy(this->cityName, cityName);
+	}	
 }
 
 // Copy Constructor
@@ -95,9 +101,7 @@ bool CAddress::operator == (const CAddress& other) const
 
 bool CAddress::operator != (const CAddress& other) const
 {
-	return (this->houseNumber != other.houseNumber) 
-		|| (this->streetName != other.streetName)
-		|| (this->cityName != other.cityName);
+	return !(*this == other);
 }
 
 ostream& operator << (ostream& os, const CAddress& other)
@@ -110,7 +114,19 @@ ostream& operator << (ostream& os, const CAddress& other)
 
 istream& operator >> (istream& in, CAddress& other)
 {
-	cout << "Please enter the house number, street name and city name" << endl;
-	in >> other.houseNumber >> other.streetName >> other.cityName;
+	cout << "Please enter the house number" << endl;
+	in >> other.houseNumber;
+
+	cout << "Please enter the street name" << endl;
+	string str;
+	in >> str;
+	other.streetName = new char[str.length() + 1];
+	strcpy(other.streetName, str.c_str());
+
+	cout << "Please enter the city name" << endl;
+	in >> str;
+	other.cityName = new char[str.length() + 1];
+	strcpy(other.cityName, str.c_str());
+
 	return in;
 }
