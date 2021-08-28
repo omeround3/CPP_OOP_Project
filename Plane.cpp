@@ -1,14 +1,19 @@
 #include "Plane.h"
-CPlane::CPlane(int serialNumber, int numOfSeats, const char *modelName)
-{
-	this->serialNumber = serialNumber;
-	this->numOfSeats = numOfSeats;
 
+// Static Variables
+int CPlane::objCounter = 100;
+
+// Constructor
+CPlane::CPlane(int numOfSeats, const char *modelName)
+{
+	this->serialNumber = ++objCounter;
+	this->numOfSeats = numOfSeats;
 	this->modelName = new char[strlen(modelName) + 1];
 	strcpy(this->modelName, modelName);
 }
 
-CPlane::CPlane(const CPlane & other)
+// Copy Constructor
+CPlane::CPlane(const CPlane &other)
 {
 	this->serialNumber = other.serialNumber;
 	this->numOfSeats = other.numOfSeats;
@@ -16,17 +21,19 @@ CPlane::CPlane(const CPlane & other)
 	strcpy(this->modelName, other.modelName);
 }
 
+// Desctructor
 CPlane::~CPlane()
 {
 	delete[] this->modelName;
 }
 
+// Getters
 int CPlane::getSerialNumber()
 {
 	return this->serialNumber;
 }
 
-char * CPlane::getModelName()
+char *CPlane::getModelName()
 {
 	return this->modelName;
 }
@@ -36,14 +43,55 @@ int CPlane::getNumOfSeats()
 	return this->numOfSeats;
 }
 
-void CPlane::Print(ostream & os)
+// Pretty print
+// void CPlane::Print(ostream &os)
+// {
+// 	os << "Plane " << this->getSerialNumber();
+// 	os << " degem " << this->getModelName();
+// 	os << " seats " << this->getNumOfSeats() << endl;
+// }
+
+// bool CPlane::IsEqual(CPlane &other)
+// {
+// 	return this->getSerialNumber() == other.getSerialNumber();
+// }
+
+//  Operators Overloading
+const CPlane &CPlane::operator=(const CPlane &other)
 {
-	os << "Plane " << this->getSerialNumber();
-	os << " degem " << this->getModelName();
-	os << " seats " << this->getNumOfSeats() << endl;
+	if (this != &other)
+	{
+		this->serialNumber = other.serialNumber;
+		delete[] this->modelName;
+		this->modelName = strdup(other.modelName);
+		this->numOfSeats = other.numOfSeats;
+	}
+	return *this;
 }
 
-bool CPlane::IsEqual(CPlane & other)
+bool CPlane::operator==(const CPlane &other) const
 {
-	return this->getSerialNumber() == other.getSerialNumber();
+	return (this->serialNumber == other.serialNumber);
+}
+
+const CPlane &CPlane::operator++()
+{
+	numOfSeats++;
+	return *this;
+}
+
+CPlane CPlane::operator++(int)
+{
+	CPlane temp(*this);
+	numOfSeats++;
+	return temp;
+}
+
+
+ostream &operator<<(ostream &os, const CPlane &other)
+{
+	os << other.serialNumber << " degenm ";
+	os << other.modelName << " seats ";
+	os << other.numOfSeats << endl;
+	return os;
 }

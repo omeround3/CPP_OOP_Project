@@ -1,11 +1,10 @@
 #include "Address.h"
 #include <iostream>
 
-
 const size_t MAX_LEN = 256;
 
 // Constructor
-CAddress::CAddress(int houseNumber, const char *streetName, const char* cityName)
+CAddress::CAddress(int houseNumber, const char *streetName, const char *cityName)
 {
 	this->houseNumber = houseNumber;
 	if (streetName != NULL)
@@ -17,11 +16,11 @@ CAddress::CAddress(int houseNumber, const char *streetName, const char* cityName
 	{
 		this->cityName = new char[strlen(cityName) + 1];
 		strcpy(this->cityName, cityName);
-	}	
+	}
 }
 
 // Copy Constructor
-CAddress::CAddress(const CAddress & other)
+CAddress::CAddress(const CAddress &other)
 {
 	this->streetName = new char[strlen(other.streetName) + 1];
 	strcpy(this->streetName, other.streetName);
@@ -40,17 +39,17 @@ CAddress::~CAddress()
 }
 
 // Getters
-int CAddress::getHouseNumber()
+const int CAddress::getHouseNumber()
 {
 	return this->houseNumber;
 }
 
-char * CAddress::getCityName()
+const char *CAddress::getCityName()
 {
 	return this->cityName;
 }
 
-char * CAddress::getStreetName()
+const char *CAddress::getStreetName()
 {
 	return this->streetName;
 }
@@ -63,7 +62,7 @@ char * CAddress::getStreetName()
 // 	os << this->getCityName() << endl;
 // }
 
-void CAddress::UpdateAddress(const char * cityName, const char * streetName, int houseNumber)
+void CAddress::UpdateAddress(const char *cityName, const char *streetName, int houseNumber)
 {
 	delete[] this->streetName;
 	this->streetName = new char[strlen(streetName) + 1];
@@ -76,12 +75,12 @@ void CAddress::UpdateAddress(const char * cityName, const char * streetName, int
 	this->houseNumber = houseNumber;
 }
 
-CAddress * CAddress::GetCurrentAddress() { return this; }
+CAddress *CAddress::GetCurrentAddress() { return this; }
 
 //  Operators Overloading
-const CAddress& CAddress::operator = (const CAddress& other)
+const CAddress &CAddress::operator=(const CAddress &other)
 {
-	if (this != &other) 
+	if (this != &other)
 	{
 		this->houseNumber = other.houseNumber;
 		delete[] this->streetName;
@@ -92,27 +91,25 @@ const CAddress& CAddress::operator = (const CAddress& other)
 	return *this;
 }
 
-bool CAddress::operator == (const CAddress& other) const
+bool CAddress::operator==(const CAddress &other) const
 {
-	return (this->houseNumber == other.houseNumber) 
-		&& (this->streetName == other.streetName)
-		&& (this->cityName == other.cityName);
+	return (this->houseNumber == other.houseNumber) && (this->streetName == other.streetName) && (this->cityName == other.cityName);
 }
 
-bool CAddress::operator != (const CAddress& other) const
+bool CAddress::operator!=(const CAddress &other) const
 {
 	return !(*this == other);
 }
 
-ostream& operator << (ostream& os, const CAddress& other)
+ostream &operator<<(ostream &os, const CAddress &other)
 {
-	os << other.streetName << "  ";
-	os << other.houseNumber << ", ";
+	os << other.streetName << " ";
+	os << other.houseNumber << " ";
 	os << other.cityName << endl;
 	return os;
 }
 
-istream& operator >> (istream& in, CAddress& other)
+istream &operator>>(istream &in, CAddress &other)
 {
 	cout << "Please enter the house number" << endl;
 	in >> other.houseNumber;
