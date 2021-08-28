@@ -111,19 +111,15 @@ ostream &operator<<(ostream &os, const CAddress &other)
 
 istream &operator>>(istream &in, CAddress &other)
 {
-	cout << "Please enter the house number" << endl;
+	string street, city;
+	cout << "Please enter house number street name and city name" << endl;
 	in >> other.houseNumber;
-
-	cout << "Please enter the street name" << endl;
-	string str;
-	in >> str;
-	other.streetName = new char[str.length() + 1];
-	strcpy(other.streetName, str.c_str());
-
-	cout << "Please enter the city name" << endl;
-	in >> str;
-	other.cityName = new char[str.length() + 1];
-	strcpy(other.cityName, str.c_str());
+	in >> street;
+	other.streetName = new char[street.length() + 1];
+	strcpy(other.streetName, street.c_str());
+	in >> city;
+	other.cityName = new char[city.length() + 1];
+	strcpy(other.cityName, city.c_str());
 
 	return in;
 }

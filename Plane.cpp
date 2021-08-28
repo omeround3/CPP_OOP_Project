@@ -90,7 +90,7 @@ CPlane CPlane::operator++(int)
 
 ostream &operator<<(ostream &os, const CPlane &other)
 {
-	os << other.serialNumber << " degenm ";
+	os << other.serialNumber << " degem ";
 	os << other.modelName << " seats ";
 	os << other.numOfSeats << endl;
 	return os;

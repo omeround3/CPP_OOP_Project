@@ -25,14 +25,14 @@ int main() // change to return void
 	// pDelta->Print(cout);
 
 	
-	// CCrewMember*  pCmArr[3];
+	CCrewMember*  pCmArr[3];
 	
-	// pCmArr[0] = new CCrewMember("Momo",125);
-	// pCmArr[1] = new CCrewMember("Gogo");
-	// pCmArr[2] = new CCrewMember("Jojo",60);
+	pCmArr[0] = new CCrewMember("Momo",125);
+	pCmArr[1] = new CCrewMember("Gogo");
+	pCmArr[2] = new CCrewMember("Jojo",60);
 
-	// if(!((*pCmArr[1]) += 200))
-	// 	cout<< "error update minutes"<<endl;
+	if(!((*pCmArr[1]) += 200))
+		cout<< "error update minutes"<<endl;
 
 	// for (int i = 0; i < 3; i++)
 	// 	if (!pDelta->AddCrewMember(*pCmArr[i]))
@@ -59,19 +59,19 @@ int main() // change to return void
 	// pDelta->Print(cout);
 
 
-	// CPlane* pPlaneArr[2];
-	// pPlaneArr[0] = new CPlane(100,"Boing373");  //seats,degem
-	// pPlaneArr[1] = new CPlane(10,"Boing3");
+	CPlane* pPlaneArr[2];
+	pPlaneArr[0] = new CPlane(100,"Boing373");  //seats,degem
+	pPlaneArr[1] = new CPlane(10,"Boing3");
 
-	// cout << "Before adding seats" << endl;
-	// cout << *pPlaneArr[1];
+	cout << "Before adding seats" << endl;
+	cout << *pPlaneArr[1];
 
-	// //Adding seats
-	// (*pPlaneArr[1])++;
-	// ++(*pPlaneArr[1]);
+	//Adding seats
+	(*pPlaneArr[1])++;
+	++(*pPlaneArr[1]);
 
-	// cout << "After adding seats" << endl;
-	// cout << *pPlaneArr[1];
+	cout << "After adding seats" << endl;
+	cout << *pPlaneArr[1];
 
 	// for (int i = 0; i < 2; i++)
 	// 	if (!pDelta->AddPlane(*pPlaneArr[i]))
@@ -83,18 +83,18 @@ int main() // change to return void
 	// cout << "******** After adding Planes *********" << endl;
 	// pDelta->Print(cout);
 
-	// CFlightInfo fInfo1("Paris",343,320,5000);
-	// CFlightInfo fInfo2("Rome",506,220,4000);
+	CFlightInfo fInfo1("Paris",343,320,5000);
+	CFlightInfo fInfo2("Rome",506,220,4000);
 	
-	// cout << fInfo1;
-	// cout << fInfo2;
+	cout << fInfo1;
+	cout << fInfo2;
 
-	// if(fInfo1 != fInfo2)
-	// 	cout << "FlightInfo not equal" << endl;
-	// else
-	// 	cout << "FlightInfo equal" << endl;
+	if(fInfo1 != fInfo2)
+		cout << "FlightInfo not equal" << endl;
+	else
+		cout << "FlightInfo equal" << endl;
 
-	// cout << "Flight time is: " << (int)fInfo1;
+	cout << "Flight time is: " << (int)fInfo1;
 
 	// CFlight* FArr[2];
 	// FArr[0] = new CFlight(fInfo1);

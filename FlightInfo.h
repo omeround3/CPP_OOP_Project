@@ -12,23 +12,35 @@ using namespace std;
 class CFlightInfo
 {
 public:
-	CFlightInfo(const char destination[],int number, int duration, int distance);
-	/* The default copy c'tor is enough here, no allocation in creation */
+	// Constructor
+	CFlightInfo(const char destination[], int number, int duration, int distance);
+	// Copy Constructor
+	CFlightInfo(const CFlightInfo &other);
+	// Desctructor
 	~CFlightInfo();
-	int getNumber();
-	char* getDestination();
-	int getDuration();
-	int getDistance();
+
+	// Getters
+	int getNumber() const;
+	const char *getDestination() const;
+	int getDuration() const;
+	int getDistance() const;
 
 	/* There are no restrictions given, hence setters return "void", not "bool" */
 	void setNumber(int number);
-	void SetDest(const char destination[]);
+	void setDest(const char destination[]);
 	void setDuration(int duration);
 	void setDistance(int distance);
 
-	void Print(ostream& os);
-	bool IsEqual(CFlightInfo& other);
+	// Class Functions
+	// void Print(ostream& os);
+	// bool IsEqual(CFlightInfo& other);
 
+	// Operators Overloading
+	const CFlightInfo &operator=(const CFlightInfo &other);
+	bool operator==(const CFlightInfo &other) const;
+	bool operator!=(const CFlightInfo &other) const;
+	friend ostream &operator<<(ostream &os, const CFlightInfo &other);
+	operator int() const;
 
 private:
 	int number;

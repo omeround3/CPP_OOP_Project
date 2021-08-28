@@ -1,44 +1,49 @@
 #include "CrewMember.h"
 
+// Static Variables
+int CCrewMember::crewCount = 1000;
+
+// Constructor
 CCrewMember::CCrewMember(const char * fullName, int minutes)
 {
 	this->fullName = new char[strlen(fullName) + 1];
 	strcpy(this->fullName, fullName);
+	this->crewNumber = ++crewCount;
 
-	this->minutes = 0;
-	this->UpdateMinutes(minutes); /* minutes value has restrictions */
 }
 
+//  Copy Constructor
 CCrewMember::CCrewMember(const CCrewMember & other)
 {
 	this->fullName = new char[strlen(other.fullName) + 1];
 	strcpy(this->fullName, other.fullName);
+	this->crewNumber = other.crewNumber;
 	this->minutes = other.minutes;
 }
 
+// Desctructor
 CCrewMember::~CCrewMember()
 {
 	delete[] this->fullName;
 }
 
-bool CCrewMember::UpdateMinutes(int minutes)
-{
-	if (minutes < 0) /* If we use "<=", we wouldn't be able to initialize with minutes=0 */
-		return false;
-	this->minutes += minutes;
-	return true;
-}
-
-char * CCrewMember::getFullName()
+// Getterr
+const char * CCrewMember::getFullName() const
 {
 	return this->fullName;
 }
 
-int CCrewMember::getMinutes()
+const int CCrewMember::getMinutes() const
 {
 	return this->minutes;
 }
 
+const int CCrewMember::getCrewNumber() const
+{
+	return this->crewNumber;
+}
+
+// Setters
 void CCrewMember::setFullName(const char *fullName)
 {
 	delete[] this->fullName;
@@ -46,13 +51,56 @@ void CCrewMember::setFullName(const char *fullName)
 	strcpy(this->fullName, fullName);
 }
 
-void CCrewMember::Print(ostream& os)
+// Class Functions
+// bool CCrewMember::UpdateMinutes(int minutes)
+// {
+// 	if (minutes < 0) /* If we use "<=", we wouldn't be able to initialize with minutes=0 */
+// 		return false;
+// 	this->minutes += minutes;
+// 	return true;
+// }
+
+// void CCrewMember::Print(ostream& os)
+// {
+// 	os << "Crewmember " << this->getFullName();
+// 	os << " minutes " << this->getMinutes() << endl;
+// }
+
+// bool CCrewMember::IsEqual(CCrewMember& other)
+// {
+// 	return strcmp(this->getFullName(), other.getFullName()) == 0;
+// }
+
+// Operators Overloading
+const CCrewMember &CCrewMember::operator=(const CCrewMember &other)
 {
-	os << "Crewmember " << this->getFullName();
-	os << " minutes " << this->getMinutes() << endl;
+	if (this != &other)
+	{
+		this->crewNumber = other.getCrewNumber();
+		this->setFullName(other.getFullName());
+		this->minutes = other.getMinutes();
+	}
+	return *this;
 }
 
-bool CCrewMember::IsEqual(CCrewMember& other)
+bool CCrewMember::operator==(const CCrewMember &other) const
 {
-	return strcmp(this->getFullName(), other.getFullName()) == 0;
+	return (this->getCrewNumber() == other.getCrewNumber());
+}
+
+CCrewMember &CCrewMember::operator+=(const CCrewMember &other)
+{
+	if (other.getMinutes() < 0) /* If we use "<=", we wouldn't be able to initialize with minutes=0 */
+		printf("ERROR: %d minutes - value is negative", minutes);
+	else
+		this->minutes += other.getMinutes();
+	return *this;
+}
+CCrewMember &CCrewMember::operator+=(int minutes)
+{
+	if (minutes < 0) /* If we use "<=", we wouldn't be able to initialize with minutes=0 */
+		printf("ERROR: %d minutes - value is negative", minutes);
+	else
+		this->minutes += minutes;
+	return *this;
 }
