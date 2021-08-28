@@ -11,7 +11,9 @@ class CCrewMember
 {
 public:
 	// Constructor
-	CCrewMember(const char* fullName, int minutes = 0);
+	CCrewMember();
+	CCrewMember(const char* fullName);
+	CCrewMember(const char* fullName, int minutes);
 	// Copy Constructor
 	CCrewMember(const CCrewMember& other);
 	// Desctructor
@@ -21,9 +23,11 @@ public:
 	const char* getFullName() const;
 	const int getMinutes() const;
 	const int getCrewNumber() const;
+	const bool isInFlight() const;
 
 	// Setters
 	void setFullName(const char *);
+	void setInFlight(bool flag);
 	
 	// Class Functions
 	// bool UpdateMinutes(int minutes);
@@ -33,14 +37,15 @@ public:
 	// Operators Overloading
 	const CCrewMember &operator=(const CCrewMember &other);
 	bool operator==(const CCrewMember &other) const;
-	CCrewMember &operator+=(const CCrewMember &other);
-	CCrewMember &operator+=(int minutes);
+	bool operator+=(int minutes);
+	friend ostream& operator<<(ostream& os, const CCrewMember& other);
 
 private:
 	static int crewCount;
 	int crewNumber; 
 	char *fullName;
 	int minutes;
+	bool inFlight;
 };
 
 #endif // !CREWMEMBER_H

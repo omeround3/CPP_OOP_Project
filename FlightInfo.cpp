@@ -1,6 +1,13 @@
 #include "FlightInfo.h"
 
 // Constructor
+CFlightInfo::CFlightInfo()
+{
+	this->number = 0;
+	this->duration = 0;
+	this->distance = 0;
+}
+
 CFlightInfo::CFlightInfo(const char destination[], int number, int duration, int distance)
 {
 	this->number = number;
@@ -86,6 +93,8 @@ const CFlightInfo &CFlightInfo::operator=(const CFlightInfo &other)
 	{
 		this->setNumber(other.getNumber());
 		this->setDest(other.getDestination());
+		this->setDistance(other.getDistance());
+		this->setDuration(other.getDuration());
 	}
 	return *this;
 }

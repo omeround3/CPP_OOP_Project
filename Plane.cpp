@@ -4,6 +4,12 @@
 int CPlane::objCounter = 100;
 
 // Constructor
+CPlane::CPlane()
+{
+	this->serialNumber = ++objCounter;
+	this->numOfSeats = 0;
+}
+
 CPlane::CPlane(int numOfSeats, const char *modelName)
 {
 	this->serialNumber = ++objCounter;
@@ -62,7 +68,6 @@ const CPlane &CPlane::operator=(const CPlane &other)
 	if (this != &other)
 	{
 		this->serialNumber = other.serialNumber;
-		delete[] this->modelName;
 		this->modelName = strdup(other.modelName);
 		this->numOfSeats = other.numOfSeats;
 	}
@@ -90,7 +95,7 @@ CPlane CPlane::operator++(int)
 
 ostream &operator<<(ostream &os, const CPlane &other)
 {
-	os << other.serialNumber << " degem ";
+	os << "Plane " << other.serialNumber << " degem ";
 	os << other.modelName << " seats ";
 	os << other.numOfSeats << endl;
 	return os;

@@ -3,12 +3,29 @@
 // Static Variables
 int CCrewMember::crewCount = 1000;
 
-// Constructor
+// Constructors
+CCrewMember::CCrewMember() 
+{
+	this->crewNumber = ++crewCount;
+	this->minutes = 0;
+	this->inFlight = false;
+}
+CCrewMember::CCrewMember(const char* fullName)
+{
+	this->fullName = new char[strlen(fullName) + 1];
+	strcpy(this->fullName, fullName);
+	this->crewNumber = ++crewCount;
+	this->minutes = 0;
+	this->inFlight = false;
+
+}
 CCrewMember::CCrewMember(const char * fullName, int minutes)
 {
 	this->fullName = new char[strlen(fullName) + 1];
 	strcpy(this->fullName, fullName);
 	this->crewNumber = ++crewCount;
+	this->minutes = minutes;
+	this->inFlight = false;
 
 }
 
@@ -19,6 +36,7 @@ CCrewMember::CCrewMember(const CCrewMember & other)
 	strcpy(this->fullName, other.fullName);
 	this->crewNumber = other.crewNumber;
 	this->minutes = other.minutes;
+	this->inFlight = other.inFlight;
 }
 
 // Desctructor
@@ -43,14 +61,23 @@ const int CCrewMember::getCrewNumber() const
 	return this->crewNumber;
 }
 
+const bool CCrewMember::isInFlight() const
+{
+	return this->inFlight;
+}
+
 // Setters
 void CCrewMember::setFullName(const char *fullName)
 {
-	delete[] this->fullName;
+	//delete[] this->fullName;
 	this->fullName = new char[strlen(fullName) + 1];
 	strcpy(this->fullName, fullName);
 }
 
+void CCrewMember::setInFlight(bool flag)
+{
+	this->inFlight = flag;
+}
 // Class Functions
 // bool CCrewMember::UpdateMinutes(int minutes)
 // {
@@ -88,19 +115,23 @@ bool CCrewMember::operator==(const CCrewMember &other) const
 	return (this->getCrewNumber() == other.getCrewNumber());
 }
 
-CCrewMember &CCrewMember::operator+=(const CCrewMember &other)
-{
-	if (other.getMinutes() < 0) /* If we use "<=", we wouldn't be able to initialize with minutes=0 */
-		printf("ERROR: %d minutes - value is negative", minutes);
-	else
-		this->minutes += other.getMinutes();
-	return *this;
-}
-CCrewMember &CCrewMember::operator+=(int minutes)
+
+bool CCrewMember::operator+=(int minutes)
 {
 	if (minutes < 0) /* If we use "<=", we wouldn't be able to initialize with minutes=0 */
+	{
 		printf("ERROR: %d minutes - value is negative", minutes);
+		return false;
+	}
 	else
+	{
 		this->minutes += minutes;
-	return *this;
+		return true;
+	}
+}
+
+ostream& operator<<(ostream& os, const CCrewMember& other)
+{
+	os << "Crewmember " << other.fullName << " minutes " << other.minutes;
+	return os;
 }

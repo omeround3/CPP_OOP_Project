@@ -11,6 +11,7 @@ class CPlane
 {
 public:
 	// Constructor
+	CPlane();
 	CPlane(int numOfSeats, const char *modelName);
 	// Copy Constructor
 	CPlane(const CPlane &other);
