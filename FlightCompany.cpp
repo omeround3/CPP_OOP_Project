@@ -15,19 +15,19 @@ CFlightCompany::CFlightCompany(const CFlightCompany& other)
 	strcpy(this->name, other.name);
 	
 	this->numCrewMembers = other.numCrewMembers;
-	for (size_t i = 0; i < this->numCrewMembers; i++)
+	for (int i = 0; i < this->numCrewMembers; i++)
 	{
 		this->AddCrewMember(*(other.crewMembers[i]));
 	}
 
 	this->numPlanes = other.numPlanes;
-	for (size_t i = 0; i < this->numPlanes; i++)
+	for (int i = 0; i < this->numPlanes; i++)
 	{
 		this->AddPlane(*(other.planes[i]));
 	}
 
 	this->numFlights = other.numFlights;
-	for (size_t i = 0; i < this->numFlights; i++)
+	for (int i = 0; i < this->numFlights; i++)
 	{
 		this->AddFlight(*(other.flights[i]));
 	}
@@ -37,17 +37,17 @@ CFlightCompany::~CFlightCompany()
 {
 	delete[] this->name;
 	
-	for (size_t i = 0; i < this->numCrewMembers; i++)
+	for (int i = 0; i < this->numCrewMembers; i++)
 	{
 		delete this->crewMembers[i];
 	}
 
-	for (size_t i = 0; i < this->numPlanes; i++)
+	for (int i = 0; i < this->numPlanes; i++)
 	{
 		delete this->planes[i];
 	}
 
-	for (size_t i = 0; i < this->numFlights; i++)
+	for (int i = 0; i < this->numFlights; i++)
 	{
 		delete this->flights[i];
 	}
@@ -116,12 +116,13 @@ CPlane * CFlightCompany::GetPlane(int index)
 {
 	if (index <= this->numPlanes)
 		return this->planes[index];
+	return nullptr;
 }
 
 void CFlightCompany::AddCrewToFlight(const int flightNum, const int employeeNum)
 {
 	int crewMebmerIdx = -1;
-	for (size_t i = 0; i < this->numCrewMembers; i++)
+	for (int i = 0; i < this->numCrewMembers; i++)
 	{
 		if (this->crewMembers[i]->getCrewNumber() == employeeNum) {
 			crewMebmerIdx = i;
@@ -129,7 +130,7 @@ void CFlightCompany::AddCrewToFlight(const int flightNum, const int employeeNum)
 		}
 	}
 	if (crewMebmerIdx != -1) {
-		for (size_t i = 0; i < numFlights; i++)
+		for (int i = 0; i < numFlights; i++)
 		{
 			if (this->flights[i]->getFlightInfo().GetFNum() == flightNum) {
 				*(this->flights[i]) = *(this->flights[i]) + *(this->crewMembers[crewMebmerIdx]);

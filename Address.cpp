@@ -1,7 +1,7 @@
 #include "Address.h"
 #include <iostream>
 
-const size_t MAX_LEN = 256;
+const int MAX_LEN = 256;
 
 // Constructor
 CAddress::CAddress(int houseNumber, const char *streetName, const char *cityName)

@@ -26,7 +26,7 @@ CFlight::CFlight(const CFlight & other)
 	this->numCrewMembers = other.numCrewMembers;
 	this->flightInfo = new CFlightInfo(*(other.flightInfo));
 
-	for (size_t i = 0; i < this->numCrewMembers; i++)
+	for (int i = 0; i < this->numCrewMembers; i++)
 	{
 		this->crewMembers[i] = other.crewMembers[i];
 	}
@@ -110,7 +110,8 @@ CFlight CFlight::operator+(CCrewMember& member)
 		tmp.numCrewMembers++;
 		return tmp;
 	}
-	
+	cout << "Can't add crew member to flight" << endl;
+	return *this;
 }
 
 ostream& operator<<(ostream& os, const CFlight& other)
@@ -121,7 +122,7 @@ ostream& operator<<(ostream& os, const CFlight& other)
 	else
 		os << " No plane assign yet ";
 	os << " There are " << other.numCrewMembers << " crew memebers in flight:" << endl;
-	for (size_t i = 0; i < other.numCrewMembers; i++)
+	for (int i = 0; i < other.numCrewMembers; i++)
 	{
 		os << *(other.crewMembers[i]) << endl;
 	}
