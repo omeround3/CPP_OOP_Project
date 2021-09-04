@@ -11,7 +11,6 @@ class CPlane
 {
 public:
 	// Constructor
-	CPlane();
 	CPlane(int numOfSeats, const char *modelName);
 	// Copy Constructor
 	CPlane(const CPlane &other);
@@ -28,11 +27,11 @@ public:
 	// bool IsEqual(CPlane &other);
 
 	// Operators Overloading
-	const CPlane &operator=(const CPlane &other);
+	const CPlane& operator=(const CPlane &other);
 	bool operator==(const CPlane &other) const;
-	const CPlane &operator++();
+	const CPlane& operator++();
 	CPlane operator++(int);
-	friend ostream &operator<<(ostream &os, const CPlane &other);
+	friend ostream& operator<<(ostream &os, const CPlane &other);
 	
 private:
 	static int objCounter;

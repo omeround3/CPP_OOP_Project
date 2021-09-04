@@ -104,7 +104,7 @@ bool CAddress::operator!=(const CAddress &other) const
 ostream &operator<<(ostream &os, const CAddress &other)
 {
 	os << other.streetName << " ";
-	os << other.houseNumber << " ";
+	os << other.houseNumber << "  ";
 	os << other.cityName << endl;
 	return os;
 }
@@ -112,7 +112,7 @@ ostream &operator<<(ostream &os, const CAddress &other)
 istream &operator>>(istream &in, CAddress &other)
 {
 	string street, city;
-	cout << "Please enter house number street name and city name" << endl;
+	cout << "Please enter house number street name and city name:" << endl;
 	in >> other.houseNumber;
 	in >> street;
 	other.streetName = new char[street.length() + 1];

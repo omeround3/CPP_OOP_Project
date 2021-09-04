@@ -4,37 +4,27 @@
 int CCrewMember::crewCount = 1000;
 
 // Constructors
-CCrewMember::CCrewMember() 
-{
-	this->crewNumber = ++crewCount;
-	this->minutes = 0;
-	this->inFlight = false;
-}
 CCrewMember::CCrewMember(const char* fullName)
 {
 	this->fullName = new char[strlen(fullName) + 1];
 	strcpy(this->fullName, fullName);
-	this->crewNumber = ++crewCount;
+	this->employeeNum = crewCount++;
 	this->minutes = 0;
-	this->inFlight = false;
 
 }
 CCrewMember::CCrewMember(const char * fullName, int minutes)
 {
-	this->fullName = new char[strlen(fullName) + 1];
-	strcpy(this->fullName, fullName);
-	this->crewNumber = ++crewCount;
-	this->minutes = minutes;
-	this->inFlight = false;
-
+	*this = CCrewMember(fullName);
+	this->minutes = minutes;	   
 }
+
 
 //  Copy Constructor
 CCrewMember::CCrewMember(const CCrewMember & other)
 {
 	this->fullName = new char[strlen(other.fullName) + 1];
 	strcpy(this->fullName, other.fullName);
-	this->crewNumber = other.crewNumber;
+	this->employeeNum = other.employeeNum;
 	this->minutes = other.minutes;
 	this->inFlight = other.inFlight;
 }
@@ -58,7 +48,7 @@ const int CCrewMember::getMinutes() const
 
 const int CCrewMember::getCrewNumber() const
 {
-	return this->crewNumber;
+	return this->employeeNum;
 }
 
 const bool CCrewMember::isInFlight() const
@@ -103,9 +93,9 @@ const CCrewMember &CCrewMember::operator=(const CCrewMember &other)
 {
 	if (this != &other)
 	{
-		this->crewNumber = other.getCrewNumber();
-		this->setFullName(other.getFullName());
-		this->minutes = other.getMinutes();
+		this->employeeNum = other.employeeNum;
+		this->setFullName(other.fullName);
+		this->minutes = other.minutes;
 	}
 	return *this;
 }

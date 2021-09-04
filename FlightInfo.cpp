@@ -1,13 +1,6 @@
 #include "FlightInfo.h"
 
 // Constructor
-CFlightInfo::CFlightInfo()
-{
-	this->number = 0;
-	this->duration = 0;
-	this->distance = 0;
-}
-
 CFlightInfo::CFlightInfo(const char destination[], int number, int duration, int distance)
 {
 	this->number = number;
@@ -31,7 +24,7 @@ CFlightInfo::~CFlightInfo()
 }
 
 // Getters
-int CFlightInfo::getNumber() const
+int CFlightInfo::GetFNum() const
 {
 	return this->number;
 }
@@ -91,7 +84,7 @@ const CFlightInfo &CFlightInfo::operator=(const CFlightInfo &other)
 {
 	if (this != &other)
 	{
-		this->setNumber(other.getNumber());
+		this->setNumber(other.GetFNum());
 		this->setDest(other.getDestination());
 		this->setDistance(other.getDistance());
 		this->setDuration(other.getDuration());
@@ -101,7 +94,7 @@ const CFlightInfo &CFlightInfo::operator=(const CFlightInfo &other)
 
 bool CFlightInfo::operator==(const CFlightInfo &other) const
 {
-	return (this->getNumber() == other.getNumber());
+	return (this->GetFNum() == other.GetFNum());
 }
 
 bool CFlightInfo::operator!=(const CFlightInfo &other) const
@@ -112,7 +105,7 @@ bool CFlightInfo::operator!=(const CFlightInfo &other) const
 ostream &operator<<(ostream &os, const CFlightInfo &other)
 {
 	os << "Flight Info dest: " << other.getDestination();
-	os << " Number " << other.getNumber();
+	os << " Number " << other.GetFNum();
 	os << " minutes " << other.getDuration();
 	os << " KM " << other.getDistance() << endl;
 	return os;

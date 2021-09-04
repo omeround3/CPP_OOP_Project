@@ -13,7 +13,6 @@ class CFlightInfo
 {
 public:
 	// Constructor
-	CFlightInfo();
 	CFlightInfo(const char destination[], int number, int duration, int distance);
 	// Copy Constructor
 	CFlightInfo(const CFlightInfo &other);
@@ -21,7 +20,7 @@ public:
 	~CFlightInfo();
 
 	// Getters
-	int getNumber() const;
+	int GetFNum() const;
 	const char *getDestination() const;
 	int getDuration() const;
 	int getDistance() const;

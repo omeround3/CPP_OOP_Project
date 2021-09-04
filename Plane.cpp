@@ -4,15 +4,9 @@
 int CPlane::objCounter = 100;
 
 // Constructor
-CPlane::CPlane()
-{
-	this->serialNumber = ++objCounter;
-	this->numOfSeats = 0;
-}
-
 CPlane::CPlane(int numOfSeats, const char *modelName)
 {
-	this->serialNumber = ++objCounter;
+	this->serialNumber = objCounter++;
 	this->numOfSeats = numOfSeats;
 	this->modelName = new char[strlen(modelName) + 1];
 	strcpy(this->modelName, modelName);

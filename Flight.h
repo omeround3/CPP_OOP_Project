@@ -7,16 +7,15 @@
 #include <iostream>
 #include "FlightInfo.h"
 #include "CrewMember.h"
-
-class CPlane;
+#include "Plane.h"
 
 class CFlight
 {
 public:
 	// Constructor
-	CFlight();
 	CFlight(CFlightInfo flightInfo);
 	CFlight(CFlightInfo flightInfo, CPlane * plane);
+	CFlight(const CFlight& other);
 	~CFlight();
 
 	// Getters
@@ -28,20 +27,21 @@ public:
 	const bool hasPlane();
 
 	// Setters
-	void SetPlane(CPlane *plane);
+	void SetPlane(CPlane* plane);
 
 	// Operators Overloading
 	const CFlight& operator=(const CFlight& other);
 	bool operator==(const CFlight& other) const;	// Compare by FlightInfo
-	CFlight operator+(const CCrewMember& member);	// Add CrewMember
+	CFlight operator+(CCrewMember& member);	// Add CrewMember
 	friend ostream& operator<<(ostream& os, const CFlight& other);
 
 private:
-	CFlightInfo flightInfo;
+	CFlightInfo* flightInfo;
 	CPlane *plane;
-	CCrewMember crewMembers[MAX_CREW];
-	int passengersNumber;
+	CCrewMember* crewMembers[MAX_CREW];
 	int numCrewMembers;
+	
+	int passengersNumber;
 	bool planeAssigned = false;
 
 };
