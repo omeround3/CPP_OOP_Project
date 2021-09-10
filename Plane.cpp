@@ -3,7 +3,6 @@
 // Static Variables
 int CPlane::objCounter = 100;
 
-// Constructor
 CPlane::CPlane(int numOfSeats, const char *modelName)
 {
 	this->serialNumber = objCounter++;
@@ -12,7 +11,6 @@ CPlane::CPlane(int numOfSeats, const char *modelName)
 	strcpy(this->modelName, modelName);
 }
 
-// Copy Constructor
 CPlane::CPlane(const CPlane &other)
 {
 	this->serialNumber = other.serialNumber;
@@ -21,13 +19,11 @@ CPlane::CPlane(const CPlane &other)
 	strcpy(this->modelName, other.modelName);
 }
 
-// Desctructor
 CPlane::~CPlane()
 {
 	delete[] this->modelName;
 }
 
-// Getters
 int CPlane::getSerialNumber()
 {
 	return this->serialNumber;
@@ -43,20 +39,13 @@ int CPlane::getNumOfSeats()
 	return this->numOfSeats;
 }
 
-// Pretty print
-// void CPlane::Print(ostream &os)
-// {
-// 	os << "Plane " << this->getSerialNumber();
-// 	os << " degem " << this->getModelName();
-// 	os << " seats " << this->getNumOfSeats() << endl;
-// }
+void CPlane::Print(ostream &os) const
+ {
+	os << "Plane " << this->serialNumber << " degem ";
+	os << this->modelName << " seats ";
+	os << this->numOfSeats << endl;
+ }
 
-// bool CPlane::IsEqual(CPlane &other)
-// {
-// 	return this->getSerialNumber() == other.getSerialNumber();
-// }
-
-//  Operators Overloading
 const CPlane &CPlane::operator=(const CPlane &other)
 {
 	if (this != &other)
@@ -89,8 +78,6 @@ CPlane CPlane::operator++(int)
 
 ostream &operator<<(ostream &os, const CPlane &other)
 {
-	os << "Plane " << other.serialNumber << " degem ";
-	os << other.modelName << " seats ";
-	os << other.numOfSeats << endl;
+	other.Print(os);
 	return os;
 }

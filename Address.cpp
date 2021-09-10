@@ -93,7 +93,7 @@ const CAddress &CAddress::operator=(const CAddress &other)
 
 bool CAddress::operator==(const CAddress &other) const
 {
-	return (this->houseNumber == other.houseNumber) && (this->streetName == other.streetName) && (this->cityName == other.cityName);
+	return (this->houseNumber == other.houseNumber) && strcmp(this->streetName,other.streetName)==0 && strcmp(this->cityName,other.cityName)==0;
 }
 
 bool CAddress::operator!=(const CAddress &other) const
@@ -105,7 +105,7 @@ ostream &operator<<(ostream &os, const CAddress &other)
 {
 	os << other.streetName << " ";
 	os << other.houseNumber << "  ";
-	os << other.cityName << endl;
+	os << other.cityName;
 	return os;
 }
 

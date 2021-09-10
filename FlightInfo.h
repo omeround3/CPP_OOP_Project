@@ -12,18 +12,15 @@ using namespace std;
 class CFlightInfo
 {
 public:
-	// Constructor
 	CFlightInfo(const char destination[], int number, int duration, int distance);
-	// Copy Constructor
 	CFlightInfo(const CFlightInfo &other);
-	// Desctructor
 	~CFlightInfo();
 
-	// Getters
 	int GetFNum() const;
 	const char *getDestination() const;
 	int getDuration() const;
 	int getDistance() const;
+
 
 	/* There are no restrictions given, hence setters return "void", not "bool" */
 	void setNumber(int number);
@@ -31,11 +28,6 @@ public:
 	void setDuration(int duration);
 	void setDistance(int distance);
 
-	// Class Functions
-	// void Print(ostream& os);
-	// bool IsEqual(CFlightInfo& other);
-
-	// Operators Overloading
 	const CFlightInfo &operator=(const CFlightInfo &other);
 	bool operator==(const CFlightInfo &other) const;
 	bool operator!=(const CFlightInfo &other) const;

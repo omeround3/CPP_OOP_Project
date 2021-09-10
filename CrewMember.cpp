@@ -1,20 +1,15 @@
 #include "CrewMember.h"
 
-// Static Variables
-int CCrewMember::crewCount = 1000;
-
 // Constructors
 CCrewMember::CCrewMember(const char* fullName)
 {
-	this->fullName = new char[strlen(fullName) + 1];
-	strcpy(this->fullName, fullName);
-	this->employeeNum = crewCount++;
+	this->fullName = strdup(fullName);
+	//this->employeeNum = crewCount++;
 	this->minutes = 0;
 
 }
-CCrewMember::CCrewMember(const char * fullName, int minutes)
+CCrewMember::CCrewMember(const char * fullName, int minutes) : CCrewMember(fullName)
 {
-	*this = CCrewMember(fullName);
 	this->minutes = minutes;	   
 }
 
@@ -22,9 +17,8 @@ CCrewMember::CCrewMember(const char * fullName, int minutes)
 //  Copy Constructor
 CCrewMember::CCrewMember(const CCrewMember & other)
 {
-	this->fullName = new char[strlen(other.fullName) + 1];
-	strcpy(this->fullName, other.fullName);
-	this->employeeNum = other.employeeNum;
+	this->fullName = strdup(other.fullName);
+	//this->employeeNum = other.employeeNum;
 	this->minutes = other.minutes;
 	this->inFlight = other.inFlight;
 }
@@ -36,22 +30,17 @@ CCrewMember::~CCrewMember()
 }
 
 // Getterr
-const char * CCrewMember::getFullName() const
+char * CCrewMember::getFullName() const
 {
 	return this->fullName;
 }
 
-const int CCrewMember::getMinutes() const
+int CCrewMember::getMinutes() const
 {
 	return this->minutes;
 }
 
-const int CCrewMember::getCrewNumber() const
-{
-	return this->employeeNum;
-}
-
-const bool CCrewMember::isInFlight() const
+bool CCrewMember::isInFlight() const
 {
 	return this->inFlight;
 }
@@ -59,28 +48,33 @@ const bool CCrewMember::isInFlight() const
 // Setters
 void CCrewMember::setFullName(const char *fullName)
 {
-	//delete[] this->fullName;
-	this->fullName = new char[strlen(fullName) + 1];
-	strcpy(this->fullName, fullName);
+	delete[] this->fullName;
+	this->fullName = strdup(fullName);
 }
 
 void CCrewMember::setInFlight(bool flag)
 {
 	this->inFlight = flag;
 }
+
 // Class Functions
+void CCrewMember::RecievePresent()
+{
+	cout << this->getFullName() << " thanking the company for receiving the holiday gift" << endl;
+}
+
+bool CCrewMember::compare(const CCrewMember & other) const
+{
+	return strcmp(this->getFullName(), other.getFullName()) == 0;
+}
+
+
 // bool CCrewMember::UpdateMinutes(int minutes)
 // {
 // 	if (minutes < 0) /* If we use "<=", we wouldn't be able to initialize with minutes=0 */
 // 		return false;
 // 	this->minutes += minutes;
 // 	return true;
-// }
-
-// void CCrewMember::Print(ostream& os)
-// {
-// 	os << "Crewmember " << this->getFullName();
-// 	os << " minutes " << this->getMinutes() << endl;
 // }
 
 // bool CCrewMember::IsEqual(CCrewMember& other)
@@ -93,7 +87,7 @@ const CCrewMember &CCrewMember::operator=(const CCrewMember &other)
 {
 	if (this != &other)
 	{
-		this->employeeNum = other.employeeNum;
+		//this->employeeNum = other.employeeNum;
 		this->setFullName(other.fullName);
 		this->minutes = other.minutes;
 	}
@@ -102,7 +96,7 @@ const CCrewMember &CCrewMember::operator=(const CCrewMember &other)
 
 bool CCrewMember::operator==(const CCrewMember &other) const
 {
-	return (this->getCrewNumber() == other.getCrewNumber());
+	return this->compare(other);
 }
 
 
@@ -122,6 +116,18 @@ bool CCrewMember::operator+=(int minutes)
 
 ostream& operator<<(ostream& os, const CCrewMember& other)
 {
-	os << "Crewmember " << other.fullName << " minutes " << other.minutes;
+	other.Print(os);
 	return os;
+}
+
+void CCrewMember::Print(ostream & os) const
+ {
+ 	os << " "<< this->getFullName();
+ 	os << " minutes " << this->getMinutes()<< " ";
+ }
+
+bool CCrewMember::TakeOff(int minutes)
+{
+	this->inFlight = true;
+	return (*this += minutes);
 }

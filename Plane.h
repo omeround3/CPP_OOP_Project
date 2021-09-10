@@ -10,28 +10,22 @@ using namespace std;
 class CPlane
 {
 public:
-	// Constructor
 	CPlane(int numOfSeats, const char *modelName);
-	// Copy Constructor
 	CPlane(const CPlane &other);
-	// Desctructor
 	~CPlane();
 
-	// Getters
 	int getSerialNumber();
 	char *getModelName();
 	int getNumOfSeats();
 
-	// Class functions
-	// void Print(ostream &os);
-	// bool IsEqual(CPlane &other);
+	virtual void Print(ostream &os) const;
 
-	// Operators Overloading
 	const CPlane& operator=(const CPlane &other);
 	bool operator==(const CPlane &other) const;
 	const CPlane& operator++();
 	CPlane operator++(int);
 	friend ostream& operator<<(ostream &os, const CPlane &other);
+	virtual void TakeOff(int minutes) {};
 	
 private:
 	static int objCounter;

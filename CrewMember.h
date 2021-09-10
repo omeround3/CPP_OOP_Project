@@ -3,47 +3,38 @@
 #define CREWMEMBER_H
 
 #include <string>
-#include <ostream>
+#include <iostream>
 
 using namespace std;
 
 class CCrewMember
 {
 public:
-	static constexpr int START_ID = 1000;
 
-	// Constructor
 	CCrewMember(const char* fullName);
 	CCrewMember(const char* fullName, int minutes);
-	// Copy Constructor
 	CCrewMember(const CCrewMember& other);
-	// Desctructor
 	~CCrewMember();
 
-	// Getters
-	const char* getFullName() const;
-	const int getMinutes() const;
-	const int getCrewNumber() const;
-	const bool isInFlight() const;
+	char* getFullName() const;
+	int getMinutes() const;
+	bool isInFlight() const;
 
-	// Setters
 	void setFullName(const char *);
 	void setInFlight(bool flag);
 
-	// Class Functions
-	// bool UpdateMinutes(int minutes);
-	// void Print(ostream& os);
-	// bool IsEqual(CCrewMember& other);
+	virtual void RecievePresent();
+	virtual bool compare(const CCrewMember& other) const;
+	virtual void GetUniform() {};
+	virtual void Print(ostream& os) const;
+	virtual bool TakeOff(int minutes);
 
-	// Operators Overloading
 	const CCrewMember &operator=(const CCrewMember &other);
 	bool operator==(const CCrewMember &other) const;
-	bool operator+=(int minutes);
+	virtual bool operator+=(int minutes);
 	friend ostream& operator<<(ostream& os, const CCrewMember& other);
 
 private:
-	static int crewCount;
-	int employeeNum;
 	char *fullName;
 	int minutes;
 	bool inFlight = false;

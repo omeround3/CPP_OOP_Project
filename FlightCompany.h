@@ -6,8 +6,12 @@
 #define MAX_CREW 10
 
 #include <string>
-#include <Iostream>
+#include <iostream>
+#include <typeinfo>
 #include "CrewMember.h"
+#include "Host.h"
+#include "Pilot.h"
+#include "Cargo.h"
 #include "Plane.h"
 #include "Flight.h"
 
@@ -17,30 +21,29 @@ using namespace std;
 class CFlightCompany
 {
 public:
-	// Costructor
 	CFlightCompany(const char* name);
-	// Copy Costructor
 	CFlightCompany(const CFlightCompany& other);
-	// Destructor
 	~CFlightCompany();
 
-	// Getters
 	const char* getName();
-
 	const int getNumCrewMembers();
 	const int getNumPlanes();
 	const int getNumFlights();
 
-
-	// Setters
-	void SetName(const char* name); /* This wasn't stated in class definition but function is used in given main */
-	bool AddCrewMember(CCrewMember member);
-	bool AddPlane(CPlane plane);
-	bool AddFlight(CFlight flight);
+	CFlight* GetFlightByNum(int flightNumber) const;
+	CCrewMember* GetCrewMember(int memberIdx) const;
 	CPlane *GetPlane(int index);
-	void AddCrewToFlight(const int flightNum, const int employeeNum);
-	
-	// Class Functions
+	int GetCargoCount();
+
+	void SetName(const char* name); /* This wasn't stated in class definition but function is used in given main */
+
+	bool AddCrewMember(const CCrewMember& member);
+	bool AddPlane(const CPlane& plane);
+	bool AddFlight(const CFlight& flight);
+	void CrewGetPresent()const ;
+	void PilotsToSimulator()const ;
+	void CrewGetUniform() const;
+	bool TakeOff(int flightNum);
 	void Print(ostream& os);
 
 private:
