@@ -1,29 +1,47 @@
 #include "Host.h"
-
-CHost::CHost(char * name, hostType type) : CCrewMember(name)
+CHost::CHost(const char * name, hostType type, int minutes) throw(CCompStringException) : CCrewMember(name,minutes)
 {
 	this->type = type;
 }
 
-void CHost::Print(ostream & os) const
+CHost::CHost(ifstream& inFile,char * buffer) : CCrewMember(inFile,buffer)
 {
-	os << "Host " << this->getType();
-	CCrewMember::Print(os);
-	os << endl;
+	inFile >> buffer;
+	this->type = hostType(atoi(buffer));
+
 }
 
-void CHost::GetUniform()
+CCrewMember * CHost::clone() const
 {
-	cout << this->getFullName()<<": I think the new uniform is very nice!" << endl;
+	return new CHost(*this);
 }
 
+void CHost::Print(ostream &os) const
+{
+	if (typeid(os) == typeid(ofstream)) {
+		os << "0 ";
+		CCrewMember::Print(os);
+		os << type;
+	}
+	else {
+		os << "Host " << this->getType();
+		CCrewMember::Print(os);
+	}
 
-void CHost::RecievePresent() {
+}
+
+void CHost::GetUniform() const
+{
+	cout << this->getFullName() << ": I think the new uniform is very nice!" << endl;
+}
+
+void CHost::RecievePresent() const
+{
 	this->CCrewMember::RecievePresent();
 	cout << "I was not expecting it" << endl;
 }
 
-char * CHost::getType() const
+char *CHost::getType() const
 {
 	return this->typeArr[this->type];
 }

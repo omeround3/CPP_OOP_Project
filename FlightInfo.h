@@ -1,9 +1,12 @@
 #pragma warning(disable : 4996)
+#pragma warning(disable : 4290)
 #ifndef FLIGHTINFO_H
 #define FLIGHTINFO_H
 
 #include <string>
 #include <ostream>
+#include <fstream>
+#include "validations.h"
 
 using namespace std;
 
@@ -14,13 +17,13 @@ class CFlightInfo
 public:
 	CFlightInfo(const char destination[], int number, int duration, int distance);
 	CFlightInfo(const CFlightInfo &other);
+	CFlightInfo(ifstream& inFile, char * buffer);
 	~CFlightInfo();
 
 	int GetFNum() const;
 	const char *getDestination() const;
 	int getDuration() const;
 	int getDistance() const;
-
 
 	/* There are no restrictions given, hence setters return "void", not "bool" */
 	void setNumber(int number);

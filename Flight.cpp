@@ -8,20 +8,18 @@ CFlight::CFlight(const CFlightInfo flightInfo)
 	this->numCrewMembers = 0;
 }
 
-CFlight::CFlight(const CFlightInfo flightInfo, CPlane* plane)
+CFlight::CFlight(const CFlightInfo flightInfo, CPlane *plane)
 {
 	this->flightInfo = new CFlightInfo(flightInfo);
 	this->plane = plane;
 	this->passengersNumber = 0;
 	this->numCrewMembers = 0;
-	this->planeAssigned = true;
 }
 
-CFlight::CFlight(const CFlight & other)
+CFlight::CFlight(const CFlight &other)
 {
 
 	this->passengersNumber = other.passengersNumber;
-	this->planeAssigned = other.planeAssigned;
 	this->plane = other.plane;
 	this->numCrewMembers = other.numCrewMembers;
 	this->flightInfo = new CFlightInfo(*(other.flightInfo));
@@ -32,6 +30,12 @@ CFlight::CFlight(const CFlight & other)
 	}
 }
 
+CFlight::CFlight(ifstream& inFile,char * buffer)
+{
+	this->flightInfo = new CFlightInfo(inFile,buffer);
+	
+}
+
 // Desctructor
 CFlight::~CFlight()
 {
@@ -39,13 +43,12 @@ CFlight::~CFlight()
 }
 
 // Getters
-const CFlightInfo CFlight::GetFlightInfo() const
+CFlightInfo& CFlight::GetFlightInfo() const
 {
 	return *(this->flightInfo);
 }
 
-
-const CPlane * CFlight::getPlane()
+const CPlane *CFlight::getPlane()const
 {
 	return this->plane;
 }
@@ -55,39 +58,50 @@ const CPlane * CFlight::getPlane()
 //	return *(this->crewMembers);
 //}
 
-const int CFlight::getPassengersNumber()
+const int CFlight::getPassengersNumber()const
 {
 	return this->passengersNumber;
 }
 
-const int CFlight::getNumCrewMembers()
+const int CFlight::getNumCrewMembers()const
 {
 	return this->numCrewMembers;
 }
 
+const CCrewMember ** CFlight::getCrewMembers() const
+{
+	return ((const CCrewMember**)this->crewMembers);
+}
+
 const bool CFlight::hasPlane()
 {
-	return this->planeAssigned;
+	return !(this->plane == nullptr);
 }
 
 // Setters
-void CFlight::SetPlane(CPlane* plane)
+void CFlight::SetPlane(CPlane *plane)
 {
 	this->plane = plane;
-	this->planeAssigned = true;
 }
 
 // Operators Overloading
 
 // Compare by FlightInfo
-bool CFlight::operator==(const CFlight& other) const
+bool CFlight::operator==(const CFlight &other) const
 {
 	return (*this->flightInfo == *other.flightInfo);
 }
 
-CFlight& CFlight::operator+(CCrewMember* member)
+CFlight &CFlight::operator+(CCrewMember *member)
 {
-	if (this->getNumCrewMembers() < MAX_CREW) { 
+	if (this->getNumCrewMembers() < MAX_CREW)
+	{
+		for (int i = 0; i < this->numCrewMembers; i++)
+		{
+			if (*this->crewMembers[i] == *member) {
+				throw CCompStringException("Crewmember already on this flight...\n");
+			}
+		}
 		/* Also needed to check that member isn't in 
 		flight but it wasn't matching the output given by Yarden, 
 		so we did whatever seems most logical */
@@ -100,63 +114,25 @@ CFlight& CFlight::operator+(CCrewMember* member)
 
 bool CFlight::TakeOff()
 {
-	if (!CheckTakeOff()) {
-		return false;
+	string msg;
+	if (!validateFlightTakeOff(this,msg))
+	{
+		throw CCompStringException(&msg[0]);
+		return false; // if we will decide to "set_terminate" one day
 	}
 
 	this->plane->TakeOff(this->flightInfo->getDuration());
 	for (int i = 0; i < this->getNumCrewMembers(); i++)
 	{
-		if (!(this->crewMembers[i]->TakeOff(this->flightInfo->getDuration()))) {
+		if (!(this->crewMembers[i]->TakeOff(this->flightInfo->getDuration())))
+		{
 			return false;
 		}
 	}
 	return true;
 }
 
-bool CFlight::CheckTakeOff()
-{
-	int pilots = 0, supers = 0;
-	CCrewMember* member;
-
-	// Checks for "InFlight" members and counts Pilots and Super Hosts
-	for (int i = 0; i < this->numCrewMembers; i++)
-	{
-		member = this->crewMembers[i];
-		if (member->isInFlight()) {
-			return false;
-		} 
-		if (strcmp(typeid(*member).name(), typeid(CPilot).name()) == 0) {
-			++pilots;
-		}
-		else if (strcmp(typeid(*member).name(), typeid(CHost).name()) == 0 &&  strcmp(((CHost*)member)->getType(),"Super")==0) {
-			++supers;
-		}
-	}
-
-	// Check that condotions for take off are met
-	if (this->plane) {
-		// Commercial Flight
-		if (strcmp(typeid(*this->plane).name(), typeid(CPlane).name())) {
-			if (pilots != 1 || supers > 1) {
-				return false;
-			}
-		}
-		//Cargo Flight
-		else {
-			if (pilots < 1) {
-				return false;
-			}
-		}
-	}
-	//No Plase assigned
-	else {
-		return false;
-	}
-
-}
-
-const CFlight& CFlight::operator=(const CFlight& other)
+const CFlight &CFlight::operator=(const CFlight &other)
 {
 	if (this != &other)
 	{
@@ -172,17 +148,32 @@ const CFlight& CFlight::operator=(const CFlight& other)
 	return *this;
 }
 
-ostream& operator<<(ostream& os, const CFlight& other)
+ostream &operator<<(ostream &os, const CFlight &other)
 {
-	os << "Flight " << *(other.flightInfo);
-	if (other.planeAssigned)
-		os << *(other.plane);
-	else
-		os << " No plane assign yet ";
-	os << " There are " << other.numCrewMembers << " crew memebers in flight:" << endl;
+
+	if (typeid(os) == typeid(ofstream)) {
+		os << (other.GetFlightInfo());
+		if (other.plane) {
+			os << "1 " << other.getPlane()->getSerialNumber();
+		}
+		else {
+			os << 0;
+		}
+		os << endl;
+		os << other.getNumCrewMembers()<<endl;
+	}
+	else {
+		os << "Flight " << *(other.flightInfo);
+		if (other.plane)
+			os << *(other.plane) << endl;
+		else
+			os << " No plane assign yet ";
+		os << " There are " << other.numCrewMembers << " crew memebers in flight:" << endl;
+	}
+
 	for (int i = 0; i < other.numCrewMembers; i++)
 	{
-		os << *(other.crewMembers[i]);
+		os << *(other.crewMembers[i]) << endl;
 	}
 	return os;
 }

@@ -1,34 +1,36 @@
 #include "Address.h"
 #include <iostream>
 
-const int MAX_LEN = 256;
-
 // Constructor
 CAddress::CAddress(int houseNumber, const char *streetName, const char *cityName)
 {
-	this->houseNumber = houseNumber;
-	if (streetName != NULL)
-	{
-		this->streetName = new char[strlen(streetName) + 1];
-		strcpy(this->streetName, streetName);
-	}
-	if (cityName != NULL)
-	{
-		this->cityName = new char[strlen(cityName) + 1];
-		strcpy(this->cityName, cityName);
-	}
+	this->setStreet(streetName);
+	this->setNumber(houseNumber);
+	this->setCity(cityName);
 }
 
 // Copy Constructor
 CAddress::CAddress(const CAddress &other)
 {
-	this->streetName = new char[strlen(other.streetName) + 1];
-	strcpy(this->streetName, other.streetName);
-
-	this->cityName = new char[strlen(other.cityName) + 1];
-	strcpy(this->cityName, other.cityName);
-
+	this->streetName = strdup(other.streetName);
+	this->cityName = strdup(other.cityName);
 	this->houseNumber = other.houseNumber;
+}
+
+CAddress::CAddress(ifstream& inFile,char * buffer)
+{
+	// Read & Set Number
+	inFile >> buffer;
+	this->setNumber(atoi(buffer));
+
+	// Read & Set Street
+	inFile >> buffer;
+	this->setStreet(buffer);
+
+	// Read & Set City
+	inFile >> buffer;
+	this->setCity(buffer);
+
 }
 
 // Desctructor
@@ -54,25 +56,46 @@ const char *CAddress::getStreetName()
 	return this->streetName;
 }
 
-// OLD Print function
-// void CAddress::Print(ostream& os)
-// {
-// 	os << this->getStreetName() << "  ";
-// 	os << this->getHouseNumber() << ", ";
-// 	os << this->getCityName() << endl;
-// }
+void CAddress::setStreet(const char * streetName)
+{
+	string msg;
+	if (!validateStreet(streetName, msg)) {
+		throw CCompStringException(&msg[0]);
+	}
+
+	if (this->streetName) {
+		delete[] this->streetName;
+	}
+	this->streetName = strdup(streetName);
+}
+void CAddress::setCity(const char * cityName)
+{
+	string msg;
+	if (!validateCity(cityName, msg)) {
+		throw CCompStringException(&msg[0]);
+	}
+
+	if (this->cityName) {
+		delete[] this->cityName;
+	}
+	this->cityName = strdup(cityName);
+}
+
+void CAddress::setNumber(int houseNumber)
+{
+	string msg;
+	if (!validateHouseNumber(houseNumber, msg)) {
+		throw CCompStringException(&msg[0]);
+	}
+
+	this->houseNumber = houseNumber;
+}
 
 void CAddress::UpdateAddress(const char *cityName, const char *streetName, int houseNumber)
 {
-	delete[] this->streetName;
-	this->streetName = new char[strlen(streetName) + 1];
-	strcpy(this->streetName, streetName);
-
-	delete[] this->cityName;
-	this->cityName = new char[strlen(cityName) + 1];
-	strcpy(this->cityName, cityName);
-
-	this->houseNumber = houseNumber;
+	this->setStreet(streetName);
+	this->setNumber(houseNumber);
+	this->setCity(cityName);
 }
 
 CAddress *CAddress::GetCurrentAddress() { return this; }
@@ -93,7 +116,7 @@ const CAddress &CAddress::operator=(const CAddress &other)
 
 bool CAddress::operator==(const CAddress &other) const
 {
-	return (this->houseNumber == other.houseNumber) && strcmp(this->streetName,other.streetName)==0 && strcmp(this->cityName,other.cityName)==0;
+	return (this->houseNumber == other.houseNumber) && strcmp(this->streetName, other.streetName) == 0 && strcmp(this->cityName, other.cityName) == 0;
 }
 
 bool CAddress::operator!=(const CAddress &other) const
@@ -103,23 +126,29 @@ bool CAddress::operator!=(const CAddress &other) const
 
 ostream &operator<<(ostream &os, const CAddress &other)
 {
-	os << other.streetName << " ";
-	os << other.houseNumber << "  ";
-	os << other.cityName;
+	if (typeid(os) == typeid(ofstream)) {
+		os << other.houseNumber << " ";
+		os << other.streetName << " ";
+		os << other.cityName;
+	}
+	else {
+		os << other.streetName << " ";
+		os << other.houseNumber << "  ";
+		os << other.cityName;
+	}
 	return os;
 }
 
 istream &operator>>(istream &in, CAddress &other)
 {
 	string street, city;
+	int number;
 	cout << "Please enter house number street name and city name:" << endl;
-	in >> other.houseNumber;
+	in >> number;
+	other.setNumber(number);
 	in >> street;
-	other.streetName = new char[street.length() + 1];
-	strcpy(other.streetName, street.c_str());
+	other.setStreet(street.c_str());
 	in >> city;
-	other.cityName = new char[city.length() + 1];
-	strcpy(other.cityName, city.c_str());
-
+	other.setCity(city.c_str());
 	return in;
 }
